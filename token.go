@@ -8,16 +8,6 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type Wrapper interface {
-	Wrap(ts oauth2.TokenSource) oauth2.TokenSource
-}
-
-type WrapperFunc func(oauth2.TokenSource) oauth2.TokenSource
-
-func (w WrapperFunc) Wrap(ts oauth2.TokenSource) oauth2.TokenSource {
-	return w(ts)
-}
-
 type SourceFunc func() (*oauth2.Token, error)
 
 func (s SourceFunc) Token() (*oauth2.Token, error) {
