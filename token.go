@@ -3,6 +3,7 @@ package outils
 import (
 	"encoding/json"
 	"os"
+	"path"
 
 	"golang.org/x/oauth2"
 )
@@ -31,6 +32,11 @@ type DiskCache struct {
 }
 
 func (dc *DiskCache) Token() (t *oauth2.Token, err error) {
+	err = os.MkdirAll(path.Dir(dc.Filename), 0755)
+	if err != nil {
+		return dc.TokenSource.Token()
+	}
+
 	f, err := os.OpenFile(dc.Filename, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
 		return dc.TokenSource.Token()
